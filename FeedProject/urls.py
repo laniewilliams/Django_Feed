@@ -25,6 +25,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG: #assigning a media url and media root. may not need it ebcause all our images will be stored in the images folder
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
