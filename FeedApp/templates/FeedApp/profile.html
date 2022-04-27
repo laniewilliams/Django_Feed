@@ -1,0 +1,19 @@
+{% extends "FeedApp/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+<!--TO ADD THE PROFILE BUTTON TO THE TOP, WE NEED TO ADD IT TO BASE.HTML-->
+{% block content %}
+
+<h1><p>My Profile:</p></h1> <!--This is the header-->
+
+<form action="{% url 'FeedApp:profile' %}" method='post'>
+    {% csrf_token %} <!--Makes sure there is no malicious code-->
+    {{ form |crispy}}
+    <br><br>
+    <button name='submit' class='btn btn-outline-primary'>Update</button> <!--The class here makes it so that when you hover over it it becomes blue-->
+</form>
+
+
+{% endblock content %}
+
