@@ -54,8 +54,19 @@ def myfeed(request):
     context = {'posts':posts,'zipped_list':zipped_list} #we want the actual post to show up and the number of likes and comments
     return render(request, 'FeedApp/myfeed.html', context)
 
-
-
-
+@login_required #this is a decorator. It prevents unauthorized access to pages that follow
+def new_post(request):
+    if request.method != 'POST':
+        form = PostForm() #blank form if it's a get request
+    else:
+        form = PostForm(request.POST,request.FILES) #if it's a post request we save the post to the database. We get the post and the files.
+        if form.is_valid():
+            new_post = form.save(commit=False) #creating an instance but not writing it to the database yet, because we're missing information
+            new_post.username = request.user
+            new_post.save() #write to database
+            return redirect('FeedApp:myfeed') #keep them at the feed page
+    
+    context = {'form':form}
+    return render(request, 'FeedApp/new_post.html', context)
 
 

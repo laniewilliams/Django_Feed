@@ -1,0 +1,21 @@
+{% extends "FeedApp/base.html" %}
+{% load bootstrap4 %}
+
+<!--TO ADD THE MY FEED BUTTON TO THE TOP, WE NEED TO ADD IT TO BASE.HTML-->
+{% block content %}
+    <h2><p>New Post:</p></h2>
+
+        <!--You must remember to include the enctype property in the form tag for the uploaded file
+            to be attached to the request properly.-->
+<form action="{% url 'FeedApp:new_post' %}" method='post' enctype='multipart/form-data'>
+
+        {% csrf_token %}<!--Makes sure there is no malicious code-->
+        {% bootstrap_form form %}
+
+        <br><br>
+        <button name='submit' class='btn btn-outline-primary'>Post</button> <!--The class here makes it so that when you hover over it it becomes blue-->
+
+</form>
+
+
+{% endblock content %}

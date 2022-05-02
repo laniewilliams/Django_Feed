@@ -7,6 +7,8 @@
 
 <h1><p>My Posts:</p></h1> <!--This is the header-->
 
+<h3><a href="{% url 'FeedApp:new_post' %}"> Add a new post<a/></h3>
+
 <table style="font-size: 25px;width: 100%;"> <!--font size is 25 pixels and it will use the entire screen. will automatically adjust-->
 
         {% for p,c,l in zipped_list %}

@@ -1,7 +1,7 @@
 from django import forms
 from .models import Post, Profile, Relationship
 
-class PostForm(forms.ModelForm):
+class PostForm(forms.ModelForm): #based off the post model
     class Meta:
         model = Post
         fields = ['description','image']
