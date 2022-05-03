@@ -132,3 +132,6 @@ def friends(request): #handles friend requests
     # if this is the first time to access the friend reqests page, create the first relationship
     # with the admin of the website so the admin is friends with everyone
 
+    if not user_relationships.exist():  #'filter' works with exists but 'get' does not
+        Relationship.objects.create(sender=user_profile,receiver=admin_profile,status='sent')
+
