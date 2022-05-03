@@ -70,3 +70,16 @@ def new_post(request):
     return render(request, 'FeedApp/new_post.html', context)
 
 
+@login_required
+def comments(request, post_id): #creating our own button and processing it manually
+    if request.method == 'POST' and request.POST.get('btn1'): #checking to see if the request method was post and if the button was clicked. naming the button in the html as btn1
+        comment = request.POST.get('comment') #getting whatever text is in the box
+        Comment.objects.create(post_id=post_id,username=request.user,text=comment,date_added=date.today()) #this is creating a new row in the comment model
+
+    comments = Comment.objects.filter(post=post_id)
+    post = Post.objects.get(id=post_id)
+
+    context = {'post':post,'comments':comments}
+    return render(request, 'FeedApp/comments.html',context)
+
+
