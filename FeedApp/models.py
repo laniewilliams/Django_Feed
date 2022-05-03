@@ -20,7 +20,7 @@ class Profile(models.Model): #user profile whenever a new user is created
         return f"{self.user.username}"
 
 STATUS_CHOICES = (
-    ('sent','sent'),
+    ('send','send'),
     ('accepted','accepted')
 )
 

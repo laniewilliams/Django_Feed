@@ -83,3 +83,52 @@ def comments(request, post_id): #creating our own button and processing it manua
     return render(request, 'FeedApp/comments.html',context)
 
 
+@login_required #this is a decorator. It prevents unauthorized access to pages that follow
+def friendsfeed(request):
+    comment_count_list = [] #we're making lists to keep track of the NUMBER of comments and likes
+    like_count_list = []
+    friends = Profile.objects.filter(user=request.user).values('friends')
+    posts = Post.objects.filter(username__in=friends).order_by('-date_posted') #gets all the post by a certain user and puts the newest posts at the top using the "-" in front of data_posted
+    for p in posts:
+        c_count = Comment.objects.filter(post=p).count() #get the count of comments linked to each post
+        l_count = Like.objects.filter(post=p).count() #get the count of likes linked to each post
+        comment_count_list.append(c_count)
+        like_count_list.append(l_count)
+
+    zipped_list = zip(posts,comment_count_list,like_count_list) #gives you the comments and likes for each post and you can iterate through all at once
+
+    if request.method == 'POST' and request.POST.get('like'): #if the form was submitted and the button was pressed
+        post_to_like = request.POST.get('like') #get the value
+        print(post_to_like)
+        like_already_exists = Like.objects.filter(post_id=post_to_like,username=request.user) #checking to see if a person has already liked it
+        if not like_already_exists: #if the user dhasn't liked it, create a new like object
+            Like.objects.create(post_id=post_to_like, username=request.user)
+            return redirect('FeedApp:friendsfeed')
+
+    context = {'posts':posts,'zipped_list':zipped_list} #we want the actual post to show up and the number of likes and comments
+    return render(request, 'FeedApp/friendsfeed.html', context)
+
+@login_required
+def friends(request): #handles friend requests
+    #get the admin_profile and user profile to create the first relationship
+    admin_profile = Profile.objects.get(user=1) #the first person created is the admin
+    user_profile = Profile.objects.get(user=request.user) 
+
+    #to get my friends and their corresponding profiles
+    user_friends = user_profile.friends.all()
+    user_friends_profiles = Profile.objects.filter(user__in=user_friends) #this will be a list
+
+    #to get Friend Requests sent
+    user_relationships = Relationship.objects.filter(sender=user_profile) #all the people the user has sent requests to
+    request_sent_profiles = user_relationships.values('receiver') #receiver is an attribute from the Relationship model, getting the profile of everyone we sent a request to
+
+    # to get eligible profiles - exclude the user, their existing friends, and friend request sent already
+    all_profiles = Profile.objects.exclude(user=request.user).exclude(id__in=user_friends_profiles).exclude(id__in=request_sent_profiles) #keep applying the exlude to each one
+
+    # to get friend request received by the user
+    request_received_profiles = Relationship.objects.filter(receiver=user_profile,status='sent') #friend requests that I have received
+
+    #we need one row in the relationship model to perform the code above
+    # if this is the first time to access the friend reqests page, create the first relationship
+    # with the admin of the website so the admin is friends with everyone
+

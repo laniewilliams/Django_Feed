@@ -1,0 +1,42 @@
+{% extends "FeedApp/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+<!--TO ADD THE MY FEED BUTTON TO THE TOP, WE NEED TO ADD IT TO BASE.HTML-->
+{% block content %}
+
+<h1><p>Posts</p></h1> <!--This is the header-->
+<form method='POST'>
+{% csrf_token %}
+
+<table style="font-size: 25px;width: 100%;"> <!--font size is 25 pixels and it will use the entire screen. will automatically adjust-->
+
+        {% for p,c,l in zipped_list %}
+            <tr style="border: 1px solid black;padding: 6px;"> <!--Adding styling to the table-->
+                <td> {{p.username}}:&nbsp{{ p }} <br> <!--Displays the username and what they posted-->
+                    {% if p.image %}
+                    <img src="{{p.image.url}}" class="img-thumbnail" style="max-height:300px" alt=''> <!--if there is an image, this allows it to show on the screen in a specified
+                                                                                                        size. If there is no image, we will display a blank-->
+                    {% endif %}
+                </td>
+
+
+            </tr>
+            <tr style="border: 1px solid black;padding: 6px;">
+                <td> {{p.date_posted}}</td> <!-- td means a NEW CELL-->
+                <td>
+                    <button type='submit' name='like' value={{p.id}} style='background-color: transparent;border:none;'>
+                    Likes: &nbsp {{l}}
+                    </button>
+                </td>
+                <td>Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp&nbsp</td> <!--the c will be the hyperlink-->
+            
+            
+            </tr>
+        {% endfor %}
+
+
+</form>
+</table>
+
+{% endblock content %}
