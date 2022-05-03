@@ -134,4 +134,22 @@ def friends(request): #handles friend requests
 
     if not user_relationships.exist():  #'filter' works with exists but 'get' does not
         Relationship.objects.create(sender=user_profile,receiver=admin_profile,status='sent')
+        
+    # check to see WHICH submit button was pressed (sending a friend request or accepting a friend request)
 
+    # this is to process alls end requests
+    if request.method == 'POST' and request.POST.get('send_requests'):
+        receivers = request.POST.getlist('send_requests') #we're getting a list because send_requests is going to be checkboxes in the html
+                                                            # the value of the checkbox will be the id of the profile
+        for receiver in receivers:
+            receiver_profile = Profile.objects.get(id=receiver) #get the receiver profile and then create the relationship object
+            Relationship.objects.create(sender=user_profile,receiver=receiver_profile,status='sent')
+        return redirect('FeedApp:friends')
+
+    # this is to process all receive requests
+    
+    if request.method == 'POST' and request.POST.get('receive_requests'):
+        senders = request.POST.getlist('friend_requests')
+        for sender in senders:
+            # update the relationship model for the sender to status 'accepted'
+            Relationship.objects.filter(id=sender).update(status='accepted')
