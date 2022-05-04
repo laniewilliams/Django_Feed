@@ -148,8 +148,21 @@ def friends(request): #handles friend requests
 
     # this is to process all receive requests
     
-    if request.method == 'POST' and request.POST.get('receive_requests'):
-        senders = request.POST.getlist('friend_requests')
+    if request.method == 'POST' and request.POST.get('receive_requests'): #how we know which button was pressed
+        senders = request.POST.getlist('friend_requests') #list of all the senders (maybe you have many friend requests)
         for sender in senders:
             # update the relationship model for the sender to status 'accepted'
             Relationship.objects.filter(id=sender).update(status='accepted')
+
+            #create a relationship object to access the sender's user id
+            # to add to the friends list of the user
+            relationship_obj = Relationship.objects.get(id=sender)
+            user_profile.friends.add(relationship_obj.sender.user) #get the user id of the person that sent to request. Then we're adding that user to the friends of the current user
+
+            # add the user to the friends list of the sender's profile
+            relationship_obj.sender.friends.add(request.user)
+
+    context = {'user_friends_profiles': user_friends_profiles, 'user_relationships':user_relationships,
+                    'all_profiles':all_profiles, 'request_received_profiles':request_received_profiles}
+
+    return render(request, 'FeedApp/friends.html', context)
