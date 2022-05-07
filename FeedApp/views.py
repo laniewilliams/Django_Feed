@@ -101,7 +101,7 @@ def friendsfeed(request):
         post_to_like = request.POST.get('like') #get the value
         print(post_to_like)
         like_already_exists = Like.objects.filter(post_id=post_to_like,username=request.user) #checking to see if a person has already liked it
-        if not like_already_exists: #if the user dhasn't liked it, create a new like object
+        if not like_already_exists.exists(): #if the user dhasn't liked it, create a new like object
             Like.objects.create(post_id=post_to_like, username=request.user)
             return redirect('FeedApp:friendsfeed')
 
