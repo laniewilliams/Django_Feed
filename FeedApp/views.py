@@ -137,7 +137,7 @@ def friends(request): #handles friend requests
         
     # check to see WHICH submit button was pressed (sending a friend request or accepting a friend request)
 
-    # this is to process alls end requests
+    # this is to process alls send requests
     if request.method == 'POST' and request.POST.get('send_requests'):
         receivers = request.POST.getlist('send_requests') #we're getting a list because send_requests is going to be checkboxes in the html
                                                             # the value of the checkbox will be the id of the profile
@@ -149,7 +149,7 @@ def friends(request): #handles friend requests
     # this is to process all receive requests
     
     if request.method == 'POST' and request.POST.get('receive_requests'): #how we know which button was pressed
-        senders = request.POST.getlist('friend_requests') #list of all the senders (maybe you have many friend requests)
+        senders = request.POST.getlist('receive_requests') #list of all the senders (maybe you have many friend requests)
         for sender in senders:
             # update the relationship model for the sender to status 'accepted'
             Relationship.objects.filter(id=sender).update(status='accepted')
