@@ -13,17 +13,21 @@
 
         {% for p,c,l in zipped_list %}
             <tr style="border: 1px solid black;padding: 6px;"> <!--Adding styling to the table-->
-                <td> {{p.username}}:&nbsp{{ p }} <br> <!--Displays the username and what they posted-->
-                    {% if p.image %}
-                    <img src="{{p.image.url}}" class="img-thumbnail" style="max-height:300px" alt=''> <!--if there is an image, this allows it to show on the screen in a specified
+                <div class="card mb-3">
+                    <h4 class="card-header">
+                        {{p.username}}&nbsp&nbsp{{p.date_posted}}
+                    </h4>
+                    <div class="card-body">
+                        {{ p }} <br>
+                        {% if p.image %}
+                        <img src="{{p.image.url}}" class="img-thumbnail" style="max-height:300px;" alt=""> <!--if there is an image, this allows it to show on the screen in a specified
                                                                                                         size. If there is no image, we will display a blank-->
-                    {% endif %}
-                </td>
+                        {% endif %}
 
-
+                    </div>
+                </div>
             </tr>
             <tr style="border: 1px solid black;padding: 6px;">
-                <td> {{p.date_posted}}</td> <!-- td means a NEW CELL-->
                 <td>Likes: &nbsp {{l}} &nbsp&nbsp&nbsp</td>
                 <td>Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp&nbsp</td> <!--the c will be the hyperlink-->
             
