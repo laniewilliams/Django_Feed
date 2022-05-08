@@ -5,7 +5,7 @@
 <!--TO ADD THE PROFILE BUTTON TO THE TOP, WE NEED TO ADD IT TO BASE.HTML-->
 {% block content %}
 
-<h1><p>My Profile:</p></h1> <!--This is the header-->
+<h1><p>My Profile</p></h1> <!--This is the header-->
 
 <form action="{% url 'FeedApp:profile' %}" method='post'>
     {% csrf_token %} <!--Makes sure there is no malicious code-->
