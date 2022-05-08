@@ -3,11 +3,15 @@
 {% load crispy_forms_tags %}
 
 <!--TO ADD THE MY FEED BUTTON TO THE TOP, WE NEED TO ADD IT TO BASE.HTML-->
-{% block content %}
+{% block page_header %}
 
 <h1><p>My Posts</p></h1> <!--This is the header-->
+{% endblock page_header %}
 
-<h3><a href="{% url 'FeedApp:new_post' %}"> Add a new post<a/></h3>
+
+{% block content %}
+
+<h3><small><a href="{% url 'FeedApp:new_post' %}"> Add a new post<a/></small></h3>
 
 <table style="font-size: 25px;width: 100%;"> <!--font size is 25 pixels and it will use the entire screen. will automatically adjust-->
 
