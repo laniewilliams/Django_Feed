@@ -17,10 +17,9 @@
 
         {% for p,c,l in zipped_list %}
             <tr style="border: 1px solid black;padding: 6px;"> <!--Adding styling to the table-->
-                <td>
                 <div class="card mb-3">
                     <h4 class="card-header">
-                        {{p.username}}
+                        {{p.username}}&nbsp&nbsp{{p.date_posted}}
                     </h4>
                     <div class="card-body">
                         {{ p }} <br>
@@ -31,11 +30,9 @@
 
                     </div>
                 </div>
-                </td>
                 
            
                 <tr style="border: 1px solid black;padding: 6px;">
-                    <td> {{p.date_posted}}</td> <!-- td means a NEW CELL-->
                     <td>
                         <button type='submit' name='like' value={{p.id}} style='background-color: transparent;border:none;'>
                         Likes: &nbsp {{l}}
