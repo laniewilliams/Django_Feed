@@ -14,7 +14,7 @@ from django.http import Http404
 
 def index(request):
     """The home page for Learning Log."""
-    return render(request, 'FeedApp/index.html')
+    return render(request, 'FeedApp/profile.html')
 
 
 
