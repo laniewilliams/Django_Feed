@@ -35,7 +35,9 @@
                 <tr style="border: 1px solid black;padding: 6px;">
                     <div class="card mb-3">
                         <h4 class="card-header">
-                            Likes: &nbsp {{l}} &nbsp&nbsp&nbsp Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp&nbsp
+                            <button type="submit" name="like" value={{p.id}} style="background-color: transparent;border: none;">
+                            Likes: &nbsp {{l}} &nbsp&nbsp&nbsp
+                            </button> Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp&nbsp
                         </h4>                                                                                <!--the c will be the hyperlink-->
                     </div>
                 
