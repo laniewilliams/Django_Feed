@@ -29,11 +29,11 @@ def profile(request):
 
     if request.method != 'POST': #means the method is get
         form = ProfileForm(instance=profile)
-    else:
+    else: #trying to save to the database
         form = ProfileForm(instance=profile, data=request.POST) #we're saving the profile data to the database
         if form.is_valid(): #performs data verification
             form.save()
-            return redirect('FeedApp:index')
+            return redirect('FeedApp:profile')
 
 
     context = {'form':form} #sending the form
