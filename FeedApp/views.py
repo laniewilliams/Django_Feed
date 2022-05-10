@@ -29,7 +29,7 @@ def profile(request):
 
     if request.method != 'POST': #means the method is get
         form = ProfileForm(instance=profile)
-    else: #trying to save to the database
+    else: # when trying to save to the database
         form = ProfileForm(instance=profile, data=request.POST) #we're saving the profile data to the database
         if form.is_valid(): #performs data verification
             form.save()
@@ -98,11 +98,11 @@ def friendsfeed(request):
 
     zipped_list = zip(posts,comment_count_list,like_count_list) #gives you the comments and likes for each post and you can iterate through all at once
 
-    if request.method == 'POST' and request.POST.get('like'): #if the form was submitted and the button was pressed
-        post_to_like = request.POST.get('like') #get the value
+    if request.method == 'POST' and request.POST.get('like'): #if the form was submitted and the like button was pressed
+        post_to_like = request.POST.get('like') #get the value of the button called 'like'
         print(post_to_like)
-        like_already_exists = Like.objects.filter(post_id=post_to_like,username=request.user) #checking to see if a person has already liked it
-        if not like_already_exists.exists(): #if the user dhasn't liked it, create a new like object
+        like_already_exists = Like.objects.filter(post_id=post_to_like,username=request.user) #checking to see if a person has already liked a particular post
+        if not like_already_exists.exists(): #if the user hasn't liked a particular post, create a new like object
             Like.objects.create(post_id=post_to_like, username=request.user)
             return redirect('FeedApp:friendsfeed')
 
@@ -116,8 +116,8 @@ def friends(request): #handles friend requests
     user_profile = Profile.objects.get(user=request.user) 
 
     #to get my friends and their corresponding profiles
-    user_friends = user_profile.friends.all()
-    user_friends_profiles = Profile.objects.filter(user__in=user_friends) #this will be a list
+    user_friends = user_profile.friends.all() #to get the user's friends
+    user_friends_profiles = Profile.objects.filter(user__in=user_friends) #to get the profiles of the user's friends, this will be a list
 
     #to get Friend Requests sent
     user_relationships = Relationship.objects.filter(sender=user_profile) #all the people the user has sent requests to
@@ -127,7 +127,7 @@ def friends(request): #handles friend requests
     all_profiles = Profile.objects.exclude(user=request.user).exclude(id__in=user_friends_profiles).exclude(id__in=request_sent_profiles) #keep applying the exlude to each one
 
     # to get friend request received by the user
-    request_received_profiles = Relationship.objects.filter(receiver=user_profile,status='sent') #friend requests that I have received
+    request_received_profiles = Relationship.objects.filter(receiver=user_profile,status='sent') #friend requests that I have received and still in the sent status
 
     #we need one row in the relationship model to perform the code above
     # if this is the first time to access the friend reqests page, create the first relationship
