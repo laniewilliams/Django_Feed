@@ -14,7 +14,7 @@
 
     <form method='POST'>
         {% csrf_token %} <!--needed to submit a comment-->
-        {% for c in comments %}
+        {% for c in comments %} <!--displays the comments on a particular post on the screen-->
         <li>
             <p> {{c.text}} &nbsp -- &nbsp {{c.username }}</p>
         </li>
@@ -22,8 +22,8 @@
         <li>There are no comments for this post.</li>
         {% endfor %}
 
-    <p><input type='text' name='comment'></p>
-    <p><button type='submit' name='btn1' value=1>Submit Comment</button></p>
+    <p><input type='text' name='comment'></p> <!--the name is used in the view and allows us to access the text of the comment-->
+    <p><button type='submit' name='btn1' value=1>Submit Comment</button></p> <!--the name of the button is used in the view to see if the button was pressed-->
     </form>
 
 
