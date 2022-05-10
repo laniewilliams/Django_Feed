@@ -10,7 +10,7 @@
 <form action="{% url 'FeedApp:new_post' %}" method='post' enctype='multipart/form-data'>
 
         {% csrf_token %}<!--Makes sure there is no malicious code-->
-        {% bootstrap_form form %}
+        {% bootstrap_form form %} <!--using the boot strap form-->
 
         <br><br>
         <button name='submit' class='btn btn-outline-primary'>Post</button> <!--The class here makes it so that when you hover over it it becomes blue-->

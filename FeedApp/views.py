@@ -60,10 +60,10 @@ def new_post(request):
     if request.method != 'POST':
         form = PostForm() #blank form if it's a get request
     else:
-        form = PostForm(request.POST,request.FILES) #if it's a post request we save the post to the database. We get the post and the files.
+        form = PostForm(request.POST,request.FILES) #if it's a post request we save the post to the database. We get the post and the image that comes with it.
         if form.is_valid():
             new_post = form.save(commit=False) #creating an instance but not writing it to the database yet, because we're missing information
-            new_post.username = request.user
+            new_post.username = request.user #we need the username because it's required in the POST model
             new_post.save() #write to database
             return redirect('FeedApp:myfeed') #keep them at the feed page
     
@@ -77,8 +77,8 @@ def comments(request, post_id): #creating our own button and processing it manua
         comment = request.POST.get('comment') #getting whatever text is in the box
         Comment.objects.create(post_id=post_id,username=request.user,text=comment,date_added=date.today()) #this is creating a new row in the comment model
 
-    comments = Comment.objects.filter(post=post_id)
-    post = Post.objects.get(id=post_id)
+    comments = Comment.objects.filter(post=post_id) # to get all the comments for a particular post
+    post = Post.objects.get(id=post_id) # need to get the corresponding post as well
 
     context = {'post':post,'comments':comments}
     return render(request, 'FeedApp/comments.html',context)
