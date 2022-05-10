@@ -136,10 +136,10 @@ def friends(request): #handles friend requests
     if not user_relationships.exists():  #'filter' works with exists but 'get' does not
         Relationship.objects.create(sender=user_profile,receiver=admin_profile,status='sent')
         
-    # check to see WHICH submit button was pressed (sending a friend request or accepting a friend request)
+    # check to see WHICH submit button was pressed (sending a friend request or accepting a friend request
 
     # this is to process alls send requests
-    if request.method == 'POST' and request.POST.get('send_requests'):
+    if request.method == 'POST' and request.POST.get('send_requests'): #if it's post and the button that is pressed is send_requests
         receivers = request.POST.getlist('send_requests') #we're getting a list because send_requests is going to be checkboxes in the html
                                                             # the value of the checkbox will be the id of the profile
         for receiver in receivers:
